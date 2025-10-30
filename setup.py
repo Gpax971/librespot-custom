@@ -13,7 +13,7 @@ with open(os.path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     install_requires = f.read().splitlines()
 
 setuptools.setup(name="librespot-spotizerr",
-                 version="0.3.1",
+                 version="0.3.0",
                  description="Spotizerr's python librespot implementation",
                  long_description=long_description,
                  long_description_content_type="text/markdown",
