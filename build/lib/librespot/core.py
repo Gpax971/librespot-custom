@@ -145,6 +145,7 @@ class ApiClient(Closeable):
             raise RuntimeError()
         proto = Metadata.Track()
         proto.ParseFromString(body)
+        print("\n\n\n\n\n\nPROTO")
         print(proto)
         return proto
 
