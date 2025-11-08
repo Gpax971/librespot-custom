@@ -96,7 +96,7 @@ class ApiClient(Closeable):
         request.headers["client-token"] = self.__client_token_str
 
         # Force metadata requests to use a specific host
-        if suffix.startswith("/metadata/4/"):
+        if suffix.startswith("/metadata/4/") or suffix.startswith("/extended-metadata/v0/"):
             base_url = "https://spclient.wg.spotify.com"
         else:
             base_url = self.__base_url
@@ -138,15 +138,13 @@ class ApiClient(Closeable):
             )
 
     def get_metadata_4_track(self, track: TrackId) -> Metadata.Track:
-        response = self.send("GET", "/metadata/4/track/{}".format(track.hex_id()), None, None)
+        response = self.send("GET", "/extended-metadata/v0/extended-metadata/track/{}".format(track.hex_id()), None, None)
         ApiClient.StatusCodeException.check_status(response)
         body = response.content
         if body is None:
             raise RuntimeError()
         proto = Metadata.Track()
         proto.ParseFromString(body)
-        print("\n\n\n\n\n\nPROTO")
-        print(proto)
         return proto
 
     def get_metadata_4_episode(self, episode: EpisodeId) -> Metadata.Episode:
