@@ -139,6 +139,9 @@ class ApiClient(Closeable):
 
     def get_metadata_4_track(self, track: TrackId) -> Metadata.Track:
         response = self.send("GET", "/extended-metadata/v0/extended-metadata/track/{}".format(track.hex_id()), None, None)
+        print("\n\n\n\n\n\nPROTO")
+        print(response)
+        print(response.body)
         ApiClient.StatusCodeException.check_status(response)
         body = response.content
         if body is None:
