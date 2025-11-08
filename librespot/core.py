@@ -141,11 +141,11 @@ class ApiClient(Closeable):
         response = self.send("GET", "/metadata/4/track/{}".format(track.hex_id()), None, None)
         ApiClient.StatusCodeException.check_status(response)
         body = response.content
-        print(body)
         if body is None:
             raise RuntimeError()
         proto = Metadata.Track()
         proto.ParseFromString(body)
+        print(proto)
         return proto
 
     def get_metadata_4_episode(self, episode: EpisodeId) -> Metadata.Episode:
