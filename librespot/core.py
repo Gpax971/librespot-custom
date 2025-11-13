@@ -137,6 +137,7 @@ class ApiClient(Closeable):
         if entityextd.header.status_code != 200:
             raise ConnectionError("Extended Metadata request failed: Status code {}".format(entityextd.header.status_code))
         mdb: bytes = entityextd.extension_data.value
+        print(mdb)
         return mdb
 
     def put_connect_state(self, connection_id: str, proto: Connect.PutStateRequest) -> None:
