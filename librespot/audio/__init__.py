@@ -348,7 +348,7 @@ class CdnFeedHelper:
             track,
             streamer,
             normalization_data,
-            file.file_id, preload, audio_key_time),
+            file.file_id, preload, audio_key_time
         )
 
     @staticmethod
