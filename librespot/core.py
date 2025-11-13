@@ -137,7 +137,6 @@ class ApiClient(Closeable):
         if entityextd.header.status_code != 200:
             raise ConnectionError("Extended Metadata request failed: Status code {}".format(entityextd.header.status_code))
         mdb: bytes = entityextd.extension_data.value
-        print(mdb)
         return mdb
 
     def put_connect_state(self, connection_id: str, proto: Connect.PutStateRequest) -> None:
@@ -165,8 +164,6 @@ class ApiClient(Closeable):
         mdb = self.get_ext_metadata(ExtensionKind.TRACK_V4, track.to_spotify_uri())
         md = Metadata.Track()
         md.ParseFromString(mdb)
-        print("TRACK")
-        print(md)
         return md
 
     def get_metadata_4_episode(self, episode: EpisodeId) -> Metadata.Episode:
