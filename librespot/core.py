@@ -165,6 +165,8 @@ class ApiClient(Closeable):
         mdb = self.get_ext_metadata(ExtensionKind.TRACK_V4, track.to_spotify_uri())
         md = Metadata.Track()
         md.ParseFromString(mdb)
+        print("TRACK")
+        print(md)
         return md
 
     def get_metadata_4_episode(self, episode: EpisodeId) -> Metadata.Episode:
