@@ -107,24 +107,6 @@ class ApiClient(Closeable):
 
         return request.prepare()
 
-        # request = requests.PreparedRequest()
-        # request.method = method
-        # request.data = body
-        # request.headers = headers.copy() if headers else {}
-        # request.headers["Authorization"] = "Bearer {}".format(
-        #     self.__session.tokens().get("playlist-read")
-        # )
-        # request.headers["client-token"] = self.__client_token_str
-
-        # # Force metadata requests to use a specific host
-        # if suffix.startswith("/metadata/4/"):
-        #     base_url = "https://spclient.wg.spotify.com"
-        # else:
-        #     base_url = self.__base_url
-
-        # request.url = base_url + suffix
-        # return request
-
     def send(
         self,
         method: str,
@@ -147,11 +129,14 @@ class ApiClient(Closeable):
 
         body = response.content
         if body is None:
-            raise RuntimeError()
+            raise ConnectionError("Extended Metadata request failed: No response body")
 
         proto = BatchedExtensionResponse()
         proto.ParseFromString(body)
-        mdb: bytes = proto.extended_metadata.pop().extension_data.pop().extension_data.value
+        entityextd = proto.extended_metadata.pop().extension_data.pop()
+        if entityextd.header.status_code != 200:
+            raise ConnectionError("Extended Metadata request failed: Status code {}".format(entityextd.header.status_code))
+        mdb: bytes = entityextd.extension_data.value
         return mdb
 
     def put_connect_state(self, connection_id: str, proto: Connect.PutStateRequest) -> None:
